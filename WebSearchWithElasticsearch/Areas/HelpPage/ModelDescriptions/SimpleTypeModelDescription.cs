@@ -1,0 +1,6 @@
+namespace WebSearchWithElasticsearch.Areas.HelpPage.ModelDescriptions
+{
+    public class SimpleTypeModelDescription : ModelDescription
+    {
+    }
+}

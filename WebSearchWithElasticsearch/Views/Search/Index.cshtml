@@ -1,0 +1,63 @@
+﻿@using (Html.BeginForm("AddUpdate", "Search"))
+{
+    @Html.Label("Id:")
+    @Html.TextBox("Id")
+    
+    <br/>
+    @Html.Label("Name:")
+    @Html.TextBox("Name")
+
+    <br />
+    @Html.Label("Description:")
+    @Html.TextBox("Description")
+    
+    <br />
+    <input type="submit" value="Add or Update Skill" />
+}
+
+@section scripts
+{
+
+<script type="text/javascript">
+var items;
+    $(document).ready(function() {
+        $("input#autocomplete").autocomplete({
+            source: function(request, response) {
+                $.ajax({
+                    // basePath is used for defining contecxt-path of the url.
+                    url: "search",
+                    dataType: "json",
+                    // data to be sent to the server:
+                    data: {
+                        term : request.term,
+                        // for passing extra parameter:
+                       // param1 : "param1 Value",
+                       // param2 : "param2 Value"
+                    },
+
+                    success: function(data,type) {
+                        var itemArray = new Array(); 
+                        for (i = 0; i < data.length; i++) {
+                            itemArray[i]  = data[i].Name + " " + data[i].Description;
+                        }
+
+                        console.log(itemArray);
+                        //items = data;
+                        response(itemArray);
+                    },
+                    //if the request fails,A error function to be called.
+                    error: function(data,type){
+                        console.log( type);
+                    }
+                });
+            }
+        });
+
+    });
+
+    </script>
+
+    <br/>
+    <label for="autocomplete">Search : </label>
+    <input id="autocomplete" type="text" style="width:500px" />
+}
