@@ -1,58 +1,7 @@
 ﻿@model WebSearchWithElasticsearch.Search.Skill
 
-@using (Html.BeginForm("Index", "Search"))
-{
-    @Html.ValidationSummary(true)
-
-    <fieldset class="form">
-        <legend>Add a new document to the search engine</legend>
-        <table width="500">
-            <tr>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <td>
-                    @Html.Label("Id:")
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Id)
-                    @Html.ValidationMessageFor(model => model.Id)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.Label("Name:")
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Name)
-                    @Html.ValidationMessageFor(model => model.Name)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    @Html.Label("Description:")
-                </td>
-                <td>
-                    @Html.EditorFor(model => model.Description)
-                    @Html.ValidationMessageFor(model => model.Description)
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <br />
-                    <input type="submit" value="Add Skill" style="width:200px" />
-                </td>
-                <td></td>
-            </tr>
-
-
-        </table>
-    </fieldset>
-}
-
 <fieldset class="form">
-    <legend>Search for a document in the search engine</legend>
+    <legend>SEARCH for a document in the search engine</legend>
     <table width="500">
         <tr>
             <th></th>
@@ -111,6 +60,10 @@
                     $("#updateCreated").val(ui.item.data.Created);
                     $("#updateUpdated").val(ui.item.data.Updated);
 
+                    $("#spandeleteId").text(ui.item.data.Id);
+                    $("#deleteId").val(ui.item.data.Id);
+                    $("#deleteName").text(ui.item.data.Name);
+
                     console.log(ui.item);
                 }
             });
@@ -120,9 +73,10 @@
     </script>
 }
 
+
 <form name="input" action="update" method="post">
     <fieldset class="form">
-        <legend>Update an existing document in the search engine</legend>
+        <legend>UPDATE an existing document in the search engine</legend>
         <table width="500">
             <tr>
                 <th></th>
@@ -142,7 +96,7 @@
                     <span>Name:</span>
                 </td>
                 <td>
-                    <input id="updateName" name="updateName"  type="text" />
+                    <input id="updateName" name="updateName" type="text" />
                 </td>
             </tr>
             <tr>
@@ -181,3 +135,81 @@
         </table>
     </fieldset>
 </form>
+
+<form name="input" action="delete" method="post">
+    <fieldset class="form">
+        <legend>DELETE an existing document in the search engine</legend>
+        <table width="500">
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    <span id="deleteName">-</span>
+                </td>
+                <td>
+                    <span id="spandeleteId">-</span>
+                    <input id="deleteId" name="deleteId" type="hidden" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <br />
+                    <input type="submit" value="Delete Skill" style="width: 200px" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+@using (Html.BeginForm("Index", "Search"))
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset class="form">
+        <legend>CREATE a new document in the search engine</legend>
+        <table width="500">
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Id:")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Id)
+                    @Html.ValidationMessageFor(model => model.Id)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Name:")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Description:")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Description)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br />
+                    <input type="submit" value="Add Skill" style="width:200px" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

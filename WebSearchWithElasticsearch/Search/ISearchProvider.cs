@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace WebSearchWithElasticsearch.Search
 {
@@ -10,5 +8,6 @@ namespace WebSearchWithElasticsearch.Search
 
 		void AddUpdateEntity(Skill skill);
 		void UpdateSkill(long updateId, string updateName, string updateDescription);
+		void DeleteSkill(long updateId);
 	}
 }

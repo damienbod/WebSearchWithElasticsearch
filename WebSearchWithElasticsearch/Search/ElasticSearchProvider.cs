@@ -47,5 +47,14 @@ namespace WebSearchWithElasticsearch.Search
 				context.SaveChanges();
 			}
 		}
+
+		public void DeleteSkill(long deleteId)
+		{
+			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
+			{
+				context.DeleteEntity<Skill>(deleteId);
+				context.SaveChanges();
+			}
+		}
 	}
 }
