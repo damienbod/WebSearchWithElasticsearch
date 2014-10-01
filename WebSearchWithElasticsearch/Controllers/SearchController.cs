@@ -36,6 +36,13 @@ namespace WebSearchWithElasticsearch.Controllers
 			return Redirect("Index");
 		}
 
+		[HttpPost]
+		public ActionResult Delete(long deleteId)
+		{
+			_searchProvider.DeleteSkill(deleteId);
+			return Redirect("Index");
+		}
+
 		public JsonResult Search(string term)
 		{			
 			return Json(_searchProvider.QueryString(term), "Skills", JsonRequestBehavior.AllowGet);
