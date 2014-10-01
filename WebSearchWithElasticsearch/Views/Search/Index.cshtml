@@ -1,9 +1,9 @@
 ﻿@model WebSearchWithElasticsearch.Search.Skill
 
-@using (Html.BeginForm("AddUpdate", "Search"))
+@using (Html.BeginForm("Index", "Search"))
 {
     @Html.ValidationSummary(true)
-    
+
     <fieldset class="form">
         <legend>Add a new document to the search engine</legend>
         <table width="500">
@@ -43,14 +43,12 @@
                     <br />
                     <input type="submit" value="Add Skill" style="width:200px" />
                 </td>
-                <td>
-                </td>
+                <td></td>
             </tr>
 
 
         </table>
     </fieldset>
-
 }
 
 <fieldset class="form">

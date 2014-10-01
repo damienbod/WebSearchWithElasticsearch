@@ -7,13 +7,15 @@ namespace WebSearchWithElasticsearch.Controllers
 	public class SearchController : Controller
 	{
 		readonly ISearchProvider _searchProvider = new ElasticSearchProvider();
-		public ActionResult Index(Skill model)
+
+		[HttpGet]
+		public ActionResult Index()
 		{
-			model = new Skill();
-			return View(model);
+			return View();
 		}
 
-		public ActionResult AddUpdate(Skill model)
+		[HttpPost]
+		public ActionResult Index(Skill model)
 		{
 			if (ModelState.IsValid)
 			{
@@ -21,10 +23,10 @@ namespace WebSearchWithElasticsearch.Controllers
 				model.Updated = DateTime.UtcNow;
 				_searchProvider.AddUpdateEntity(model);
 
-				return View("Index", model);
+				return Redirect("Search/Index");
 			}
-			return Redirect("Index");
-			
+
+			return View("Index", model);
 		}
 
 		public JsonResult Search(string term)

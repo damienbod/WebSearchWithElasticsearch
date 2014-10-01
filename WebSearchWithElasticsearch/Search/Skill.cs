@@ -5,6 +5,8 @@ namespace WebSearchWithElasticsearch.Search
 {
 	public class Skill
 	{
+		[Required]
+		[Range(1, long.MaxValue)]
 		public long Id { get; set; }
 		[Required]
 		public string Name { get; set; }
