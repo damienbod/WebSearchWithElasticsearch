@@ -29,6 +29,13 @@ namespace WebSearchWithElasticsearch.Controllers
 			return View("Index", model);
 		}
 
+		[HttpPost]
+		public ActionResult Update(long updateId, string updateName, string updateDescription)
+		{
+			_searchProvider.UpdateSkill(updateId, updateName, updateDescription);
+			return Redirect("Index");
+		}
+
 		public JsonResult Search(string term)
 		{			
 			return Json(_searchProvider.QueryString(term), "Skills", JsonRequestBehavior.AllowGet);
