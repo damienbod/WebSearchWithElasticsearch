@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using ElasticLinq;
 using ElasticsearchCRUD;
-using Microsoft.Ajax.Utilities;
 
 namespace WebSearchWithElasticsearch.Search
 {
@@ -39,7 +38,7 @@ namespace WebSearchWithElasticsearch.Search
 		{
 			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
 			{
-				var skill = context.GetEntity<Skill>(updateId).Result.PayloadResult;
+				var skill = context.GetEntity<Skill>(updateId);
 				skill.Updated = DateTime.UtcNow;
 				skill.Name = updateName;
 				skill.Description = updateDescription;
