@@ -29,7 +29,7 @@ namespace WebSearchWithElasticsearch.Search
 		{
 			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
 			{
-				context.AddUpdateEntity(skill, skill.Id);
+				context.AddUpdateDocument(skill, skill.Id);
 				context.SaveChanges();
 			}
 		}
@@ -38,11 +38,11 @@ namespace WebSearchWithElasticsearch.Search
 		{
 			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
 			{
-				var skill = context.GetEntity<Skill>(updateId);
+				var skill = context.GetDocument<Skill>(updateId);
 				skill.Updated = DateTime.UtcNow;
 				skill.Name = updateName;
 				skill.Description = updateDescription;
-				context.AddUpdateEntity(skill, skill.Id);
+				context.AddUpdateDocument(skill, skill.Id);
 				context.SaveChanges();
 			}
 		}
@@ -51,7 +51,7 @@ namespace WebSearchWithElasticsearch.Search
 		{
 			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
 			{
-				context.DeleteEntity<Skill>(deleteId);
+				context.DeleteDocument<Skill>(deleteId);
 				context.SaveChanges();
 			}
 		}
