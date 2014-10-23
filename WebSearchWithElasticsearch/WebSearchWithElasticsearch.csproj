@@ -43,9 +43,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="ElasticLinq">
-      <HintPath>..\ElasticLinq.dll</HintPath>
-    </Reference>
     <Reference Include="ElasticsearchCRUD, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ElasticsearchCRUD.1.0.9\lib\net45\ElasticsearchCRUD.dll</HintPath>

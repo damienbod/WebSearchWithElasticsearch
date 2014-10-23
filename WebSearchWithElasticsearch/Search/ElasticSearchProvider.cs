@@ -1,58 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
-using ElasticLinq;
+using System.Text;
 using ElasticsearchCRUD;
 
 namespace WebSearchWithElasticsearch.Search
 {
-	public class ElasticSearchProvider : ISearchProvider
+	public class ElasticSearchProvider : ISearchProvider, IDisposable
 	{
+		public ElasticSearchProvider()
+		{
+			_context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver);
+		}
+
 		private const string ConnectionString = "http://localhost:9200/";
 		private readonly IElasticSearchMappingResolver _elasticSearchMappingResolver = new ElasticSearchMappingResolver();
+		private readonly ElasticSearchContext _context;
 
 		public IEnumerable<Skill> QueryString(string term)
 		{
-			var connection = new ElasticConnection(new Uri(ConnectionString));
-			var context = new ElasticContext(connection);
+			return _context.Search<Skill>(BuildQueryStringSearch(term));
+		}
 
+		private string BuildQueryStringSearch(string term)
+		{
+			/*			
+			{
+			  "query": {
+						"query_string": {
+						   "query": "*"
+
+						}
+					}
+			}
+			 */
+			var names = "";
 			if (term != null)
 			{
-				var names = term.Replace("+", " OR *");
-
-				return context.Query<Skill>().QueryString(names + "*");
+				names = term.Replace("+", " OR *");
 			}
 
-			return context.Query<Skill>().QueryString("*");
+			var buildJson = new StringBuilder();
+			buildJson.AppendLine("{");
+			buildJson.AppendLine(" \"query\": {");
+			buildJson.AppendLine("   \"query_string\": {");
+			buildJson.AppendLine("      \"query\": \"" + names  + "*\"");
+			buildJson.AppendLine("     }");
+			buildJson.AppendLine("  }");
+			buildJson.AppendLine("}");
+
+			return buildJson.ToString();
 		}
 
 		public void AddUpdateEntity(Skill skill)
 		{
-			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
-			{
-				context.AddUpdateDocument(skill, skill.Id);
-				context.SaveChanges();
-			}
+			_context.AddUpdateDocument(skill, skill.Id);
+			_context.SaveChanges();
 		}
 
 		public void UpdateSkill(long updateId, string updateName, string updateDescription)
 		{
-			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
-			{
-				var skill = context.GetDocument<Skill>(updateId);
-				skill.Updated = DateTime.UtcNow;
-				skill.Name = updateName;
-				skill.Description = updateDescription;
-				context.AddUpdateDocument(skill, skill.Id);
-				context.SaveChanges();
-			}
+			var skill = _context.GetDocument<Skill>(updateId);
+			skill.Updated = DateTime.UtcNow;
+			skill.Name = updateName;
+			skill.Description = updateDescription;
+			_context.AddUpdateDocument(skill, skill.Id);
+			_context.SaveChanges();
 		}
 
 		public void DeleteSkill(long deleteId)
 		{
-			using (var context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver))
+			_context.DeleteDocument<Skill>(deleteId);
+			_context.SaveChanges();
+		}
+
+		private bool isDisposed;
+		public void Dispose()
+		{
+			if (isDisposed)
 			{
-				context.DeleteDocument<Skill>(deleteId);
-				context.SaveChanges();
+				isDisposed = true;
+				_context.Dispose();
 			}
 		}
 	}
