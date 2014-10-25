@@ -18,7 +18,7 @@ namespace WebSearchWithElasticsearch.Search
 
 		public IEnumerable<Skill> QueryString(string term)
 		{
-			return _context.Search<Skill>(BuildQueryStringSearch(term));
+			return _context.Search<Skill>(BuildQueryStringSearch(term)).PayloadResult;
 		}
 
 		private string BuildQueryStringSearch(string term)
