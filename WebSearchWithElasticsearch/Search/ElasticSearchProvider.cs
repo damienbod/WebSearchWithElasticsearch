@@ -9,12 +9,12 @@ namespace WebSearchWithElasticsearch.Search
 	{
 		public ElasticSearchProvider()
 		{
-			_context = new ElasticSearchContext(ConnectionString, _elasticSearchMappingResolver);
+			_context = new ElasticsearchContext(ConnectionString, _elasticSearchMappingResolver);
 		}
 
 		private const string ConnectionString = "http://localhost:9200/";
-		private readonly IElasticSearchMappingResolver _elasticSearchMappingResolver = new ElasticSearchMappingResolver();
-		private readonly ElasticSearchContext _context;
+		private readonly IElasticsearchMappingResolver _elasticSearchMappingResolver = new ElasticsearchMappingResolver();
+		private readonly ElasticsearchContext _context;
 
 		public IEnumerable<Skill> QueryString(string term)
 		{
