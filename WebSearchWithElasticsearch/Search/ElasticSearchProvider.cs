@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ElasticsearchCRUD;
 
@@ -18,7 +19,8 @@ namespace WebSearchWithElasticsearch.Search
 
 		public IEnumerable<Skill> QueryString(string term)
 		{
-			return _context.Search<Skill>(BuildQueryStringSearch(term)).PayloadResult;
+			var results = _context.Search<Skill>(BuildQueryStringSearch(term));
+			 return results.PayloadResult.Hits.HitsResult.Select(t => t.Source);
 		}
 
 		private string BuildQueryStringSearch(string term)
