@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using ElasticsearchCRUD;
+using ElasticsearchCRUD.Model.SearchModel;
+using ElasticsearchCRUD.Model.SearchModel.Queries;
 
 namespace WebSearchWithElasticsearch.Search
 {
@@ -23,34 +24,30 @@ namespace WebSearchWithElasticsearch.Search
 			 return results.PayloadResult.Hits.HitsResult.Select(t => t.Source);
 		}
 
-		private string BuildQueryStringSearch(string term)
+		/*			
 		{
-			/*			
-			{
-			  "query": {
-						"query_string": {
-						   "query": "*"
+		  "query": {
+					"query_string": {
+					   "query": "*"
 
-						}
 					}
-			}
-			 */
+				}
+		}
+		 */
+		private ElasticsearchCRUD.Model.SearchModel.Search BuildQueryStringSearch(string term)
+		{
 			var names = "";
 			if (term != null)
 			{
 				names = term.Replace("+", " OR *");
 			}
 
-			var buildJson = new StringBuilder();
-			buildJson.AppendLine("{");
-			buildJson.AppendLine(" \"query\": {");
-			buildJson.AppendLine("   \"query_string\": {");
-			buildJson.AppendLine("      \"query\": \"" + names  + "*\"");
-			buildJson.AppendLine("     }");
-			buildJson.AppendLine("  }");
-			buildJson.AppendLine("}");
+			var search = new ElasticsearchCRUD.Model.SearchModel.Search
+			{
+				Query = new Query(new QueryStringQuery(names + "*"))
+			};
 
-			return buildJson.ToString();
+			return search;
 		}
 
 		public void AddUpdateEntity(Skill skill)
