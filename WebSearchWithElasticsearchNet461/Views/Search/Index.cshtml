@@ -1,0 +1,215 @@
+﻿@model WebSearchWithElasticsearch.Search.Skill
+
+<fieldset class="form">
+    <legend>SEARCH for a document in the search engine</legend>
+    <table width="500">
+        <tr>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                <label for="autocomplete">Search: </label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input id="autocomplete" type="text" style="width:500px" />
+            </td>
+        </tr>
+    </table>
+</fieldset>
+
+@section scripts
+{
+    <script type="text/javascript">
+        var items;
+        $(document).ready(function() {
+            $("input#autocomplete").autocomplete({
+                source: function(request, response) {
+                    $.ajax({
+                        url: "search",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                        },
+                        success: function(data) {
+                            var itemArray = new Array();
+                            for (i = 0; i < data.length; i++) {
+                                itemArray[i] = { label: data[i].Name, value: data[i].Name, data: data[i] }
+                            }
+ 
+                            console.log(itemArray);
+                            response(itemArray);
+                        },
+                        error: function(data, type) {
+                            console.log(type);
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $("#spanupdateId").text(ui.item.data.Id);
+                    $("#spanupdateCreated").text(new Date(parseInt(ui.item.data.Created.substr(6))));
+                    $("#spanupdateUpdated").text(new Date(parseInt(ui.item.data.Updated.substr(6))));
+
+                    $("#updateName").text(ui.item.data.Name);
+                    $("#updateDescription").text(ui.item.data.Description);
+                    $("#updateName").val(ui.item.data.Name);
+                    $("#updateDescription").val(ui.item.data.Description);
+
+                    $("#updateId").val(ui.item.data.Id);
+                    $("#updateCreated").val(ui.item.data.Created);
+                    $("#updateUpdated").val(ui.item.data.Updated);
+
+                    $("#spandeleteId").text(ui.item.data.Id);
+                    $("#deleteId").val(ui.item.data.Id);
+                    $("#deleteName").text(ui.item.data.Name);
+
+                    console.log(ui.item);
+                }
+            });
+
+        });
+
+    </script>
+}
+
+
+<form name="input" action="update" method="post">
+    <fieldset class="form">
+        <legend>UPDATE an existing document in the search engine</legend>
+        <table width="500">
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    <span>Id:</span>
+                </td>
+                <td>
+                    <span id="spanupdateId">-</span>
+                    <input id="updateId" name="updateId" type="hidden" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Name:</span>
+                </td>
+                <td>
+                    <input id="updateName" name="updateName" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Description:</span>
+                </td>
+                <td>
+                    <input id="updateDescription" name="updateDescription" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Created:</span>
+                </td>
+                <td>
+                    <span id="spanupdateCreated">-</span>
+                    <input id="updateCreated" name="updateCreated" type="hidden" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span>Updated:</span>
+                </td>
+                <td>
+                    <span id="spanupdateUpdated">-</span>
+                    <input id="updateUpdated" name="updateUpdated" type="hidden" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br />
+                    <input type="submit" value="Update Skill" style="width: 200px" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+<form name="input" action="delete" method="post">
+    <fieldset class="form">
+        <legend>DELETE an existing document in the search engine</legend>
+        <table width="500">
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    <span id="deleteName">-</span>
+                </td>
+                <td>
+                    <span id="spandeleteId">-</span>
+                    <input id="deleteId" name="deleteId" type="hidden" />
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <br />
+                    <input type="submit" value="Delete Skill" style="width: 200px" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+</form>
+
+@using (Html.BeginForm("Index", "Search"))
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset class="form">
+        <legend>CREATE a new document in the search engine</legend>
+        <table width="500">
+            <tr>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Id:")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Id)
+                    @Html.ValidationMessageFor(model => model.Id)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Name:")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Name)
+                    @Html.ValidationMessageFor(model => model.Name)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.Label("Description:")
+                </td>
+                <td>
+                    @Html.EditorFor(model => model.Description)
+                    @Html.ValidationMessageFor(model => model.Description)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <br />
+                    <input type="submit" value="Add Skill" style="width:200px" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
